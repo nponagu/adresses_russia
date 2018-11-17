@@ -1,0 +1,9 @@
+.env/
+archieve
+Архив
+__pycache__/
+env/
+*.db
+*.txt
+*.xlsx
+*.dbf
