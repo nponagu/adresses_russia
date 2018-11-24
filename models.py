@@ -3,7 +3,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-
 class Address(Base):
     """Таблица – ADDROBJ (Object) содержит коды, наименования и типы адресообразующих элементов (регионы; округа;
     районы (улусы, кужууны); города, внутригородские районы,  поселки городского типа, сельские населенные пункты; 

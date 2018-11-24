@@ -4,13 +4,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from models import Base
 from models import Address, Status, CenterStatus, CurrentStatus, EstateStatus, FlatType, House, HouseStateStatus, \
-    IntervalStatus, DocType, NormativeDocument, OperStat, Room, RoomType, AddressObjectType, Stead
+    IntervalStatus, DocType, NormativeDocument, OperStat, Room, RoomType, AddressObjectType, Stead, StructureStatus
 
-DIRECTION = '/fias_delta_dbf'
+DIRECTION = 'C:/projects/Adresses/adresses_russia/fias_delta_dbf'
 MODEL_NAME = {
     'ADDROB': Address,
     'ACTSTAT': Status,
-    # 'ACTSTA': Status,
     'CENTERST': CenterStatus,
     'CURENTST': CurrentStatus,
     'ESTSTAT': EstateStatus,
@@ -21,10 +20,11 @@ MODEL_NAME = {
     'NDOCTYPE': DocType,
     'NORDOC': NormativeDocument,
     'OPERSTAT': OperStat,
-    'ROOMTYPE': Room,
-    'SOCRBASE': RoomType,
-    'STEAD': AddressObjectType,
-    'STRSTAT': Stead
+    'ROOM': Room,
+    'ROOMTYPE': RoomType,
+    'SOCRBASE': AddressObjectType,
+    'STEAD': Stead,
+    'STRSTAT': StructureStatus
 }
 
 engine = create_engine("sqlite:///mybase.db")
