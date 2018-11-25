@@ -6,7 +6,8 @@ from models import Base
 from models import Address, Status, CenterStatus, CurrentStatus, EstateStatus, FlatType, House, HouseStateStatus, \
     IntervalStatus, DocType, NormativeDocument, OperStat, Room, RoomType, AddressObjectType, Stead, StructureStatus
 
-DIRECTION = 'C:/projects/Adresses/adresses_russia/fias_delta_dbf'
+DIRECTION = r'{}/{}'.format(os.getcwd(),'fias_delta_dbf')
+
 MODEL_NAME = {
     'ADDROB': Address,
     'ACTSTAT': Status,
@@ -42,9 +43,9 @@ def get_table_name(file_name):
     return type_
 
 def make_row_dict(order_dict):
-    '''convert a regular dict of table row with lower case from ordered dict
+    '''convert a regular dict of table row with lower case from an ordered dict
     Input:
-    :order_dict: - an ordered dictionaty of table row from dbf files
+    :order_dict: - an ordered dictionary of table row from dbf files
     Output:
     :reg_dict: - a regular dictionary of table row with lower case keys
     '''
