@@ -41,6 +41,16 @@ def get_table_name(file_name):
     type_ = ''.join([i for i in os.path.splitext(file_name)[0] if not i.isnumeric()])
     return type_
 
+def make_row_dict(order_dict):
+    '''convert a regular dict of table row with lower case from ordered dict
+    Input:
+    :order_dict: - an ordered dictionaty of table row from dbf files
+    Output:
+    :reg_dict: - a regular dictionary of table row with lower case keys
+    '''
+    reg_dict = dict((k.lower(), v) for k, v in order_dict.items())
+    return reg_dict
+
 for file in os.listdir(DIRECTION):
     print(
         'Работаем с файлом "{}"'.format(file)
@@ -51,7 +61,9 @@ for file in os.listdir(DIRECTION):
     type_ = get_table_name(file)
     for row in dbf_db:
         current_model = MODEL_NAME[type_]
-        session.add(current_model(**dict((k.lower(), v) for k, v in row.items())))  #в функцию
+        row_dict = make_row_dict(row)
+        session.add(current_model(**row_dict))
+
     session.commit()
 
 session.close()
