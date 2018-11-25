@@ -31,6 +31,16 @@ engine = create_engine("sqlite:///mybase.db")
 
 Base.metadata.create_all(engine)
 
+def get_table_name(file_name):
+    '''get a name of dbf file without numbers
+    Input:
+    :file_name: - a name of dbf file
+    Output:
+    :type_: - a clear name of dbf file to send it to a dictionary
+    '''
+    type_ = ''.join([i for i in os.path.splitext(file_name)[0] if not i.isnumeric()])
+    return type_
+
 for file in os.listdir(DIRECTION):
     print(
         'Работаем с файлом "{}"'.format(file)
@@ -38,8 +48,8 @@ for file in os.listdir(DIRECTION):
     session = Session(bind=engine)
     dp_path = r'{}/{}'.format(DIRECTION, file)
     dbf_db = DBF(dp_path, 'cp866')
+    type_ = get_table_name(file)
     for row in dbf_db:
-        type_ = ''.join([i for i in os.path.splitext(file)[0] if not i.isnumeric()]) #в функцию
         current_model = MODEL_NAME[type_]
         session.add(current_model(**dict((k.lower(), v) for k, v in row.items())))  #в функцию
     session.commit()
