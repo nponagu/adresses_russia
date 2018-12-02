@@ -16,6 +16,18 @@ class Status(Base):
         return '<Status {} {}>'.format(self.actstatid, self.name)
 
 
+class CenterStatus(Base):
+    """Статус центра"""
+    __tablename__ = 'centerstatus'
+    id = Column(Integer, primary_key=True)
+    centerstid = Column(Integer)
+    name = Column(String(100))
+    adresses = relationship("Address", backref="centerstatus")
+
+    def __repr__(self):
+        return '<Status {} {}>'.format(self.centerstid, self.name)
+
+
 class Address(Base):
     """Таблица – ADDROBJ (Object) содержит коды, наименования и типы адресообразующих элементов (регионы; округа;
     районы (улусы, кужууны); города, внутригородские районы,  поселки городского типа, сельские населенные пункты; 
@@ -29,7 +41,7 @@ class Address(Base):
     aolevel = Column(Integer)
     areacode = Column(String(3))
     autocode = Column(String(1))
-    centstatus = Column(Integer)
+    centstatus = Column(Integer, ForeignKey('centerstatus.centerstid'))
     citycode = Column(String(3))
     code = Column(String(17))
     currstatus = Column(Integer)
@@ -65,17 +77,6 @@ class Address(Base):
 
     def __repr__(self):
         return '<Address {} {} {}>'.format(self.aoguid, self.formalname, self.regioncode)
-
-
-class CenterStatus(Base):
-    """Статус центра"""
-    __tablename__ = 'centerstatus'
-    id = Column(Integer, primary_key=True)
-    centerstid = Column(Integer)
-    name = Column(String(100))
-
-    def __repr__(self):
-        return '<Status {} {}>'.format(self.centerstid, self.name)
 
 
 class CurrentStatus(Base):
