@@ -28,6 +28,19 @@ class CenterStatus(Base):
         return '<Status {} {}>'.format(self.centerstid, self.name)
 
 
+class CurrentStatus(Base):
+    """Таблица CURENTST (CurrentStatus) – содержит перечень статусов актуальности записи  адресного элемента по 
+    классификатору КЛАДР4.0."""
+    __tablename__ = 'currentstatus'
+    id = Column(Integer, primary_key=True)
+    curentstid = Column(Integer)
+    name = Column(String(100))
+    adresses = relationship("Address", backref="currentstatus")
+
+    def __repr__(self):
+        return '<CurrentStatus {} {}>'.format(self.curentstid, self.name)
+
+
 class Address(Base):
     """Таблица – ADDROBJ (Object) содержит коды, наименования и типы адресообразующих элементов (регионы; округа;
     районы (улусы, кужууны); города, внутригородские районы,  поселки городского типа, сельские населенные пункты; 
@@ -44,7 +57,7 @@ class Address(Base):
     centstatus = Column(Integer, ForeignKey('centerstatus.centerstid'))
     citycode = Column(String(3))
     code = Column(String(17))
-    currstatus = Column(Integer)
+    currstatus = Column(Integer, ForeignKey('currentstatus.curentstid'))
     enddate = Column(Date)
     formalname = Column(String(120))
     ifnsfl = Column(String(4))
@@ -77,18 +90,6 @@ class Address(Base):
 
     def __repr__(self):
         return '<Address {} {} {}>'.format(self.aoguid, self.formalname, self.regioncode)
-
-
-class CurrentStatus(Base):
-    """Таблица CURENTST (CurrentStatus) – содержит перечень статусов актуальности записи  адресного элемента по 
-    классификатору КЛАДР4.0."""
-    __tablename__ = 'currentstatus'
-    id = Column(Integer, primary_key=True)
-    curentstid = Column(Integer)
-    name = Column(String(100))
-
-    def __repr__(self):
-        return '<CurrentStatus {} {}>'.format(self.curentstid, self.name)
 
 
 class EstateStatus(Base):
