@@ -1,7 +1,20 @@
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
+
+class Status(Base):
+    """Статус актуальности ФИАС"""
+    __tablename__ = 'status'
+    id = Column(Integer, primary_key=True)
+    actstatid = Column(Integer)
+    name = Column(String(100))
+    adresses = relationship("Address", backref="status")
+
+    def __repr__(self):
+        return '<Status {} {}>'.format(self.actstatid, self.name)
+
 
 class Address(Base):
     """Таблица – ADDROBJ (Object) содержит коды, наименования и типы адресообразующих элементов (регионы; округа;
@@ -10,7 +23,7 @@ class Address(Base):
     адресного элемента)."""
     __tablename__ = 'address'
     id = Column(Integer, primary_key=True)
-    actstatus = Column(Integer)
+    actstatus = Column(Integer, ForeignKey('status.id'))
     aoguid = Column(String(36))
     aoid = Column(String(36))
     aolevel = Column(Integer)
@@ -52,17 +65,6 @@ class Address(Base):
 
     def __repr__(self):
         return '<Address {} {} {}>'.format(self.aoguid, self.formalname, self.regioncode)
-
-
-class Status(Base):
-    """Статус актуальности ФИАС"""
-    __tablename__ = 'status'
-    id = Column(Integer, primary_key=True)
-    actstatid = Column(Integer)
-    name = Column(String(100))
-
-    def __repr__(self):
-        return '<Status {} {}>'.format(self.actstatid, self.name)
 
 
 class CenterStatus(Base):
