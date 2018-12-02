@@ -105,17 +105,6 @@ class EstateStatus(Base):
         return '<EstateStatus {} {}>'.format(self.eststatid, self.name)
 
 
-class FlatType(Base):
-    """Таблица FLATTYPE (FlatType) – НЕТ В ДОКУМЕНТЕ. ВАЖНО: ОПРЕДЕЛЯЕТ ТИП ПОМЕЩЕНИЯ (КВАРТИРА, ОФИС, СКЛАД И Т.Д.)"""
-    __tablename__ = 'flattype'
-    id = Column(Integer, primary_key=True)
-    fltypeid = Column(Integer)
-    name = Column(String(100))
-    shortname = Column(String(100))
-
-    def __repr__(self):
-        return '<FlatType {} {}>'.format(self.fltypeid, self.name)
-
 class House(Base):
     """Таблица HOUSE (House) содержат информацию о номерах отдельных домов, владений, домовладений, корпусов, 
     строений и земельных участках"""
@@ -210,6 +199,19 @@ class OperStat(Base):
         return '<OperStat {} {}>'.format(self.operstatid, self.name)
 
 
+class FlatType(Base):
+    """Таблица FLATTYPE (FlatType) – НЕТ В ДОКУМЕНТЕ. ВАЖНО: ОПРЕДЕЛЯЕТ ТИП ПОМЕЩЕНИЯ (КВАРТИРА, ОФИС, СКЛАД И Т.Д.)"""
+    __tablename__ = 'flat_type'
+    id = Column(Integer, primary_key=True)
+    fltypeid = Column(Integer)
+    name = Column(String(100))
+    shortname = Column(String(100))
+    rooms = relationship("Room", backref="flat_type")
+
+    def __repr__(self):
+        return '<FlatType {} {}>'.format(self.fltypeid, self.name)
+
+
 class Room(Base):
     """Таблица ROOM (Room) содержит записи с номерами помещений, квартир, офисов, комнат, 
     а также их кадастровые номера"""
@@ -220,7 +222,7 @@ class Room(Base):
     houseguid = Column(String(36))
     regioncode = Column(String(2))
     flatnumber = Column(String(50))
-    flattype = Column(Integer)
+    flattype = Column(Integer, ForeignKey('flat_type.fltypeid'))
     roomnumber = Column(String(50))
     roomtype = Column(Integer)
     cadnum = Column(String(100))
