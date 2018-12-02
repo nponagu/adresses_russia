@@ -99,6 +99,7 @@ class EstateStatus(Base):
     eststatid = Column(Integer)
     name = Column(String(100))
     shortname = Column(String(100))
+    houses = relationship("House", backref="estatestatus")
 
     def __repr__(self):
         return '<EstateStatus {} {}>'.format(self.eststatid, self.name)
@@ -115,7 +116,6 @@ class FlatType(Base):
     def __repr__(self):
         return '<FlatType {} {}>'.format(self.fltypeid, self.name)
 
-
 class House(Base):
     """Таблица HOUSE (House) содержат информацию о номерах отдельных домов, владений, домовладений, корпусов, 
     строений и земельных участках"""
@@ -124,7 +124,7 @@ class House(Base):
     aoguid = Column(String(36))
     buildnum = Column(String(10))
     enddate = Column(Date)
-    eststatus = Column(Integer)
+    eststatus = Column(Integer, ForeignKey('estatestatus.eststatid'))
     houseguid = Column(String(36))
     houseid = Column(String(36))
     housenum = Column(String(20))
