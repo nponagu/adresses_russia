@@ -105,6 +105,18 @@ class EstateStatus(Base):
         return '<EstateStatus {} {}>'.format(self.eststatid, self.name)
 
 
+class HouseStateStatus(Base):
+    """Таблица HSTSTAT (HouseStateStatus) – содержит перечень возможных состояний объектов недвижимости"""
+    __tablename__ = 'housestatestatus'
+    id = Column(Integer, primary_key=True)
+    housestid = Column(Integer)
+    name = Column(String(60))
+    houses = relationship("House", backref="housestatestatus")
+
+    def __repr__(self):
+        return '<HouseStateStatus {} {}>'.format(self.housestid, self.name)
+
+
 class House(Base):
     """Таблица HOUSE (House) содержат информацию о номерах отдельных домов, владений, домовладений, корпусов, 
     строений и земельных участках"""
@@ -117,7 +129,7 @@ class House(Base):
     houseguid = Column(String(36))
     houseid = Column(String(36))
     housenum = Column(String(20))
-    statstatus = Column(Integer)
+    statstatus = Column(Integer, ForeignKey('housestatestatus.housestid'))
     ifnsfl = Column(String(4))
     ifnsul = Column(String(4))
     okato = Column(String(11))
@@ -136,17 +148,6 @@ class House(Base):
 
     def __repr__(self):
         return '<House {} {} {}>'.format(self.aoguid, self.eststatus, self.housenum)
-
-
-class HouseStateStatus(Base):
-    """Таблица HSTSTAT (HouseStateStatus) – содержит перечень возможных состояний объектов недвижимости"""
-    __tablename__ = 'housestatestatus'
-    id = Column(Integer, primary_key=True)
-    housestid = Column(Integer)
-    name = Column(String(60))
-
-    def __repr__(self):
-        return '<HouseStateStatus {} {}>'.format(self.housestid, self.name)
 
 
 class IntervalStatus(Base):
