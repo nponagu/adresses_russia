@@ -195,6 +195,7 @@ class OperStat(Base):
     id = Column(Integer, primary_key=True)
     operstatid = Column(Integer)
     name = Column(String(100))
+    rooms = relationship("Room", backref="oper_stat")
 
     def __repr__(self):
         return '<OperStat {} {}>'.format(self.operstatid, self.name)
@@ -232,7 +233,7 @@ class Room(Base):
     updatedate = Column(Date)
     previd = Column(String(36))
     nextid = Column(String(36))
-    operstatus = Column(Integer)
+    operstatus = Column(Integer, ForeignKey('oper_stat.operstatid'))
     startdate = Column(Date)
     enddate = Column(Date)
     livestatus = Column(Integer)
