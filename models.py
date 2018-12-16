@@ -41,6 +41,21 @@ class CurrentStatus(Base):
         return '<CurrentStatus {} {}>'.format(self.curentstid, self.name)
 
 
+class AddressObjectType(Base):
+    """Таблица  SOCRBASE (AddressObjectType) – содержит перечень полных, сокращённых наименований типов адресных 
+    элементов и уровней их классификации"""
+    __tablename__ = 'address_object_type'
+    id = Column(Integer, primary_key=True)
+    level = Column(Integer)
+    socrname = Column(String(50))
+    scname = Column(String(10))
+    kod_t_st = Column(String(4))
+    addresses = relationship("Address", backref="address_object_type")
+
+    def __repr__(self):
+        return '<AddressObjectType {} {}>'.format(self.kod_t_st, self.socrname)
+
+
 class Address(Base):
     """Таблица – ADDROBJ (Object) содержит коды, наименования и типы адресообразующих элементов (регионы; округа;
     районы (улусы, кужууны); города, внутригородские районы,  поселки городского типа, сельские населенные пункты; 
@@ -51,7 +66,7 @@ class Address(Base):
     actstatus = Column(Integer, ForeignKey('status.id'))
     aoguid = Column(String(36))
     aoid = Column(String(36))
-    aolevel = Column(Integer)
+    aolevel = Column(Integer, ForeignKey('address_object_type.level'))
     areacode = Column(String(3))
     autocode = Column(String(1))
     centstatus = Column(Integer, ForeignKey('centerstatus.centerstid'))
@@ -254,20 +269,6 @@ class Room(Base):
 
     def __repr__(self):
         return '<Room {} {}>'.format(self.roomid, self.flatnumber, self.roomnumber)
-
-
-class AddressObjectType(Base):
-    """Таблица  SOCRBASE (AddressObjectType) – содержит перечень полных, сокращённых наименований типов адресных 
-    элементов и уровней их классификации"""
-    __tablename__ = 'address_object_type'
-    id = Column(Integer, primary_key=True)
-    level = Column(Integer)
-    socrname = Column(String(50))
-    scname = Column(String(10))
-    kod_t_st = Column(String(4))
-
-    def __repr__(self):
-        return '<AddressObjectType {} {}>'.format(self.kod_t_st, self.socrname)
 
 
 class Stead(Base):
