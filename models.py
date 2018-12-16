@@ -214,6 +214,19 @@ class FlatType(Base):
         return '<FlatType {} {}>'.format(self.fltypeid, self.name)
 
 
+class RoomType(Base):
+    """Таблица  ROOMTYPE (RoomType) – Тип комнаты"""
+    __tablename__ = 'room_type'
+    id = Column(Integer, primary_key=True)
+    rmtypeid = Column(Integer)
+    name = Column(String(100))
+    shortname = Column(String(100))
+    rooms = relationship("Room", backref="room_type")
+
+    def __repr__(self):
+        return '<RoomType {} {}>'.format(self.rmtypeid, self.name)
+
+
 class Room(Base):
     """Таблица ROOM (Room) содержит записи с номерами помещений, квартир, офисов, комнат, 
     а также их кадастровые номера"""
@@ -226,7 +239,7 @@ class Room(Base):
     flatnumber = Column(String(50))
     flattype = Column(Integer, ForeignKey('flat_type.fltypeid'))
     roomnumber = Column(String(50))
-    roomtype = Column(Integer)
+    roomtype = Column(Integer, ForeignKey('room_type.rmtypeid'))
     cadnum = Column(String(100))
     roomcadnum = Column(String(100))
     postalcode = Column(String(6))
@@ -241,18 +254,6 @@ class Room(Base):
 
     def __repr__(self):
         return '<Room {} {}>'.format(self.roomid, self.flatnumber, self.roomnumber)
-
-
-class RoomType(Base):
-    """Таблица  ROOMTYPE (RoomType) – Тип комнаты"""
-    __tablename__ = 'room_type'
-    id = Column(Integer, primary_key=True)
-    rmtypeid = Column(Integer)
-    name = Column(String(100))
-    shortname = Column(String(100))
-
-    def __repr__(self):
-        return '<RoomType {} {}>'.format(self.rmtypeid, self.name)
 
 
 class AddressObjectType(Base):
