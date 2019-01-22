@@ -119,7 +119,6 @@ class EstateStatus(Base):
     def __repr__(self):
         return '<EstateStatus {} {}>'.format(self.eststatid, self.name)
 
-
 class HouseStateStatus(Base):
     """Таблица HSTSTAT (HouseStateStatus) – содержит перечень возможных состояний объектов недвижимости"""
     __tablename__ = 'housestatestatus'
@@ -130,6 +129,18 @@ class HouseStateStatus(Base):
 
     def __repr__(self):
         return '<HouseStateStatus {} {}>'.format(self.housestid, self.name)
+
+class StructureStatus(Base):
+    """Таблица STRSTAT (StructureStatus) – содержит перечень видов строений"""
+    __tablename__ = 'structure_status'
+    id = Column(Integer, primary_key=True)
+    strstatid = Column(Integer)
+    name = Column(String(20))
+    shortname = Column(String(20))
+    houses = relationship("House", backref="housestatestatus")
+
+    def __repr__(self):
+        return '<StructureStatus {} {}>'.format(self.strstatid, self.name)
 
 
 class House(Base):
@@ -152,7 +163,7 @@ class House(Base):
     postalcode = Column(String(6))
     startdate = Column(Date)
     strucnum = Column(String(10))
-    strstatus = Column(Integer)
+    strstatus = Column(Integer, ForeignKey('structure_status.strstatid'))
     terrifnsfl = Column(String(4))
     terrifnsul = Column(String(4))
     updatedate = Column(Date)
@@ -302,14 +313,3 @@ class Stead(Base):
     def __repr__(self):
         return '<Stead {} {}>'.format(self.steadguid, self.number)
 
-
-class StructureStatus(Base):
-    """Таблица STRSTAT (StructureStatus) – содержит перечень видов строений"""
-    __tablename__ = 'structure_status'
-    id = Column(Integer, primary_key=True)
-    strstatid = Column(Integer)
-    name = Column(String(20))
-    shortname = Column(String(20))
-
-    def __repr__(self):
-        return '<StructureStatus {} {}>'.format(self.strstatid, self.name)
