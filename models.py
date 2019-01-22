@@ -64,6 +64,7 @@ class OperStat(Base):
     name = Column(String(100))
     rooms = relationship("Room", backref="oper_stat")
     addresses = relationship("Address", backref="oper_stat")
+    steads = relationship("Stead", backref="oper_stat")
 
     def __repr__(self):
         return '<OperStat {} {}>'.format(self.operstatid, self.name)
@@ -300,7 +301,7 @@ class Stead(Base):
     parentguid = Column(String(36))
     steadid = Column(String(36))
     previd = Column(String(36))
-    operstatus = Column(Integer)
+    operstatus = Column(Integer, ForeignKey('oper_stat.operstatid'))
     startdate = Column(Date)
     enddate = Column(Date)
     nextid = Column(String(36))
@@ -313,4 +314,3 @@ class Stead(Base):
 
     def __repr__(self):
         return '<Stead {} {}>'.format(self.steadguid, self.number)
-
