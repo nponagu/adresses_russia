@@ -56,6 +56,19 @@ class AddressObjectType(Base):
         return '<AddressObjectType {} {}>'.format(self.kod_t_st, self.socrname)
 
 
+class OperStat(Base):
+    """Таблица  OPERSTAT (OperationStatus) – содержит перечень кодов операций над адресными объектами"""
+    __tablename__ = 'oper_stat'
+    id = Column(Integer, primary_key=True)
+    operstatid = Column(Integer)
+    name = Column(String(100))
+    rooms = relationship("Room", backref="oper_stat")
+    addresses = relationship("Address", backref="oper_stat")
+
+    def __repr__(self):
+        return '<OperStat {} {}>'.format(self.operstatid, self.name)
+
+
 class Address(Base):
     """Таблица – ADDROBJ (Object) содержит коды, наименования и типы адресообразующих элементов (регионы; округа;
     районы (улусы, кужууны); города, внутригородские районы,  поселки городского типа, сельские населенные пункты; 
@@ -81,7 +94,7 @@ class Address(Base):
     offname = Column(String(120))
     okato = Column(String(11))
     oktmo = Column(String(11))
-    operstatus = Column(Integer)
+    operstatus = Column(Integer, ForeignKey('oper_stat.operstatid'))
     parentguid = Column(String(36))
     placecode = Column(String(3))
     plaincode = Column(String(15))
@@ -213,18 +226,6 @@ class NormativeDocument(Base):
 
     def __repr__(self):
         return '<NormativeDocument {} {}>'.format(self.normdocid, self.docname)
-
-
-class OperStat(Base):
-    """Таблица  OPERSTAT (OperationStatus) – содержит перечень кодов операций над адресными объектами"""
-    __tablename__ = 'oper_stat'
-    id = Column(Integer, primary_key=True)
-    operstatid = Column(Integer)
-    name = Column(String(100))
-    rooms = relationship("Room", backref="oper_stat")
-
-    def __repr__(self):
-        return '<OperStat {} {}>'.format(self.operstatid, self.name)
 
 
 class FlatType(Base):
