@@ -151,7 +151,7 @@ class StructureStatus(Base):
     strstatid = Column(Integer)
     name = Column(String(20))
     shortname = Column(String(20))
-    houses = relationship("House", backref="housestatestatus")
+    houses = relationship("House", backref="structure_status")
 
     def __repr__(self):
         return '<StructureStatus {} {}>'.format(self.strstatid, self.name)
